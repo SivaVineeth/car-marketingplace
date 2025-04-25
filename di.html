@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardealing - Buy & Sell Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Your existing CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header>div {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img.pic {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .logo h1 #car {
+            color: #2a5bd7;
+        }
+
+        .navbar {
+            display: flex;
+            gap: 25px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .navbar a:hover {
+            color: #2a5bd7;
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #2a5bd7;
+            transition: width 0.3s ease;
+        }
+
+        .navbar a:hover::after {
+            width: 100%;
+        }
+        .text{
+        
+    top: 30%;
+    left: 30%;
+    
+    text-align: center;
+
+        }
+     .text p{
+        color:white;
+        font-weight: 600;
+        font-size: 30px;
+        
+     }
+
+        /* New Car Listing Form Styles */
+        .form-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            background-color: #2a5bd7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #1e4baf;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        /* Car Listings Grid */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .car-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .car-card:hover .car-image img {
+            transform: scale(1.05);
+        }
+
+        .car-details {
+            padding: 20px;
+        }
+
+        .car-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .car-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+
+        .car-specs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background-color: #2a5bd7;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .view-btn:hover {
+            background-color: #1e4baf;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .car-modal-content {
+            display: flex;
+            gap: 30px;
+        }
+
+        .car-modal-images {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail.active {
+            border-color: #2a5bd7;
+        }
+
+        .car-modal-info {
+            flex: 1;
+        }
+
+        .car-modal-info h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .modal-price {
+            font-size: 1.8rem;
+            color: #27ae60;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .car-modal-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .car-modal-specs div {
+            display: flex;
+            align-items: center;
+        }
+
+        .car-modal-specs i {
+            margin-right: 10px;
+            color: #2a5bd7;
+            font-size: 1.2rem;
+        }
+
+        .car-description {
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .seller-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .seller-info h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .seller-info p {
+            margin-bottom: 8px;
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin: 30px auto;
+            max-width: 1400px;
+            padding: 0 20px;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .car-modal-content {
+                flex-direction: column;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Your existing slider and other styles */
+        .text-content {
+            margin-top: 100px;
+            width: calc(100% - 850px);
+            color: rgb(23, 2, 2);
+            padding: 0, 0, 0, 20px;
+            margin-left: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            padding-bottom: 60px;
+            overflow: visible;
+        }
+
+       
+
+        .background {
+            background-image: url('./carphoto5.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            margin-top:-200px;
+        
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 96%;
+            
+            z-index: 0;
+        }
+
+        .um {
+            text-align: center;
+            font-size: 50px;
+        }
+
+        .lu {
+            text-align: center;
+        }
+
+        .we {
+            text-align: center;
+            margin-top: 50px;
+            color: navy;
+        }
+
+        .us {
+            text-align: center;
+        }
+
+        .content img {
+            height: 65px;
+            margin: 25px;
+            margin-left: 60px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 35px;
+
+
+        }
+
+        .house {
+            box-sizing: border-box;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(245, 245, 245, 0.255);
+            box-shadow: 5px 3px 6px 4px rgba(0, 0, 0, 0.164);
+            border-radius: 5px;
+        }
+
+        .house>h2,
+        p {
+            text-align: center;
+        }
+
+        .cont {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .containr {
+            height: 400px;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-end;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 80px;
+            height: 380px;
+            border-radius: 2rem;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            overflow: hidden;
+            margin: 0 10px;
+            display: flex;
+            align-items: flex-end;
+            transition: all 0.6s cubic-bezier(0.28, -0.03, 0, 0.99);
+            box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 70%, transparent 100%);
+            z-index: 1;
+        }
+
+        .row {
+            color: white;
+            display: flex;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .icon {
+            background: #223;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .description {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+            height: 80px;
+            width: 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition-delay: 0.3s;
+            transition: all 0.3s ease;
+        }
+
+        .description p {
+            color: #b0b0ba;
+            padding-top: 5px;
+        }
+
+        .description h4 {
+            text-transform: uppercase;
+        }
+
+        .madhu {
+            text-align: center;
+            font-size: 50px;
+            margin-top: 50px;
+        }
+
+        .siva {
+            text-align: center;
+        }
+
+        .containr>input {
+            display:none;
+        }
+
+        input:checked+label {
+            width: 500px;
+        }
+
+        input:checked+label .description {
+            opacity: 1;
+            transform: translateY(0);
+            width: 100%;
+        }
+
+        label[for="c1"] {
+            background-image: url('./loyality.jpg');
+        }
+
+        label[for="c2"] {
+            background-image: url('./veterian.jpg');
+        }
+
+        label[for="c3"] {
+            background-image: url('./finance.jpg');
+        }
+
+        label[for="c4"] {
+            background-image: url('./bonus.jpeg');
+        }
+       
+
+
+.description {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 0;
+    min-height: 0;
+    width: 0;
+    opacity: 0;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    padding: 0 20px 0 0;
+}
+input:checked+label .description {
+    opacity: 1;
+    width: 100%;
+    height: auto;
+    min-height: 120px; /* Increased to accommodate text */
+    margin-top: 0;
+    overflow: visible;
+    padding-right: 20px;
+    transform: none;
+}
+.description p {
+    color: #b0b0ba;
+    padding-top: 5px;
+    white-space: normal; /* Changed from nowrap */
+    display: block;
+    max-height: none;
+}
+
+
+.description h4 {
+    text-transform: uppercase;
+    color: white; /* Ensures visibility against dark background */
+    margin: 0; /* Removes default margin */
+    white-space: nowrap; /* Prevents text wrapping */
+    top:-160px;
+}
+        /* Contact Section Styles */
+        .contact-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        .contact-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .contact-heading {
+            width: 100%;
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-subheading {
+            width: 100%;
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .contact-form-container {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form-group {
+            margin-bottom: 20px;
+        }
+
+        .contact-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .contact-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .contact-submit-btn {
+            background-color: #2a5bd7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        .contact-submit-btn:hover {
+            background-color: #1e4baf;
+        }
+
+        .contact-details {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info-heading {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            color: #2a5bd7;
+            font-size: 1.2rem;
+            width: 30px;
+        }
+
+        .contact-info-text {
+            color: #34495e;
+        }
+
+        /* Responsive Contact Section */
+        @media (max-width: 768px) {
+
+            .contact-form-container,
+            .contact-details {
+                flex: 100%;
+            }
+        }
+
+        /* Your existing footer styles */
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background: black;
+            width: 100%;
+            color: rgb(252, 252, 252);
+            padding: 0;
+            margin: 0;
+            margin-top: 40px;
+        }
+
+        .footer-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            float: right;
+        }
+
+        .footer-wrapper>h3 {
+            line-height: 3;
+            color: white;
+            margin-right: 80%;
+        }
+
+        .footer-wrapper h4 {
+            line-height: 3;
+            color: white;
+        }
+        .footer-wrapper >h3:hover,h4:hover{
+            color:purple;
+            cursor: pointer;
+
+        }
+
+        .footer-wrapper p {
+            max-width: 400px;
+            line-height: 2.0;
+        }
+
+        .social-media {
+            margin-top: 1rem;
+        }
+
+        .social-media a {
+            text-decoration: none;
+            color: white;
+            margin-right: 80px;
+            padding: 0;
+        }
+
+        .footer-wrapper a {
+            text-decoration: none;
+            color: white;
+            line-height: 2;
+        }
+
+        .footer-wrapper a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <div class="logo">
+                <img src="./carlogo.jpeg" class="pic" alt="logo">
+                <h1><span id="car">Car Marketplace</span></h1>
+            </div>
+            <div class="navbar">
+                <a href="#home">Home</a>
+                <a href="#listings">Carlisting</a>
+                <a href="#sell">Sell Your Car</a>
+                <a href="#offers">Offers</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </header>
+
+   
+
+    <div class="background">
+        <div class="container">
+           
+        </div>
+    </div>
+
+    <!-- Car Listings Section -->
+    <section id="listings" class="list">
+        <h1 class="um">Recent Car Listings</h1>
+        <p class="lu">Browse our latest collection of quality vehicles from trusted sellers</p>
+
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Search by make, model or year...">
+            <select id="priceFilter">
+                <option value="">Any Price</option>
+                <option value="5000">Under $5,000</option>
+                <option value="10000">Under $10,000</option>
+                <option value="20000">Under $20,000</option>
+                <option value="50000">Under $50,000</option>
+            </select>
+        </div>
+
+        <div class="listings-grid" id="carListings">
+            <!-- Car listings will be loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Sell Your Car Form Section -->
+    <section id="sell" class="form-container">
+        <h2>Sell Your Car</h2>
+        <form id="carForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="sellerName">Your Name:</label>
+                <input type="text" id="sellerName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sellerEmail">Email:</label>
+                <input type="email" id="sellerEmail" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sellerPhone">Phone:</label>
+                <input type="tel" id="sellerPhone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="carMake">Car Make:</label>
+                <input type="text" id="carMake" required>
+            </div>
+
+            <div class="form-group">
+                <label for="carModel">Car Model:</label>
+                <input type="text" id="carModel" required>
+            </div>
+
+            <div class="form-group">
+                <label for="carYear">Year:</label>
+                <input type="number" id="carYear" min="1900" max="2023" required>
+            </div>
+
+            <div class="form-group">
+                <label for="carPrice">Price ($):</label>
+                <input type="number" id="carPrice" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="carMileage">Mileage:</label>
+                <input type="number" id="carMileage" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="carDescription">Description:</label>
+                <textarea id="carDescription" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="carPhotos">Upload Photos (Max 5):</label>
+                <input type="file" id="carPhotos" accept="image/*" multiple max="5">
+                <div class="image-preview" id="imagePreview"></div>
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Listing</button>
+        </form>
+    </section>
+
+    <!-- Modal for Car Details -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalCarDetails"></div>
+        </div>
+    </div>
+
+    <!-- offers -->
+    <section id="offers">
+        <h1 class="madhu">offeres here</h1>
+        <p class="siva">offeres for the car we offer</p>
+        <div class="cont" id="Offers"></div>
+        <div class="wrapper">
+            <div class="containr">
+                <input type="radio" name="slide" id="c1" checked>
+                <label for="c1" class="card">
+                    <div class="row">
+                        <div class="icon">1</div>
+                        <div class="description">
+                            <h4>LOYALTY DISCOUNTS</h4>
+                            <p>1,500bonus+free maintenance(1year) and same modelupgrade 2,000 cash + 3 months insurance if
+                                New brand switch</p>
+                        </div>
+                    </div>
+                </label>
+                <input type="radio" name="slide" id="c2">
+                <label for="c2" class="card">
+                    <div class="row">
+                        <div class="icon">2</div>
+                        <div class="description">
+                            <h4>MILITARY OFFERS</h4>
+                            <p> Get $2,500 off any vehicle + 0.5% APR discount & free 2-year roadside assistance. Valid military ID required.</p>
+                        </div>
+                    </div>
+                </label>
+                <input type="radio" name="slide" id="c3">
+                <label for="c3" class="card">
+                    <div class="row">
+                        <div class="icon">3</div>
+                        <div class="description">
+                            <h4>FINANCING DEALS</h4>
+                            <p> 0% APR for 36 months + 
+                                500 instant cash,2000 back guarantee if not satisfied (within 30 days of test drives)</p>
+                        </div>
+                    </div>
+                </label>
+                <input type="radio" name="slide" id="c4">
+                <label for="c4" class="card">
+                    <div class="row">
+                        <div class="icon">4</div>
+                        <div class="description">
+                            <h4>FREE BONUSES</h4>
+                            <p>Ceramic coating (1,200value)•5−yearwarranty•Familydiscount:+1000 per extra car
+                                (Max 2 discounts)</p>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Form Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-wrapper">
+            <h2 class="contact-heading">Contact Us</h2>
+            <p class="contact-subheading">Have questions? Get in touch with our team.</p>
+
+            <form id="contactForm" class="contact-form-container">
+                <div class="contact-form-group">
+                    <label for="contactName">Your Name:</label>
+                    <input type="text" id="contactName" class="contact-input" required>
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="contactEmail">Email:</label>
+                    <input type="email" id="contactEmail" class="contact-input" required>
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="contactPhone">Phone (optional):</label>
+                    <input type="tel" id="contactPhone" class="contact-input">
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="contactSubject">Subject:</label>
+                    <input type="text" id="contactSubject" class="contact-input" required>
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="contactMessage">Message:</label>
+                    <textarea id="contactMessage" class="contact-textarea" rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="contact-submit-btn">Send Message</button>
+            </form>
+
+            <div class="contact-details">
+                <h3 class="contact-info-heading">Other Ways to Reach Us</h3>
+                <div class="contact-info-item">
+                    <i class="fas fa-map-marker-alt contact-icon"></i>
+                    <span class="contact-info-text">123 Car Street, Auto City, AC 12345</span>
+                </div>
+                <div class="contact-info-item">
+                    <i class="fas fa-phone contact-icon"></i>
+                    <span class="contact-info-text">+1 (555) 123-4567</span>
+                </div>
+                <div class="contact-info-item">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <span class="contact-info-text">info@cardealing.com</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-wrapper">
+            <h3>CARDEALING</h3>
+            <p>Your premier platform for buying and selling vehicles with ease and confidence.</p>
+            <div class="social-media">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-wrapper">
+            <h4>Explore</h4>
+            <a href="#">Top Listings</a>
+            <a href="#">Terms of Services</a>
+            <a href="#">How It Works</a>
+            <a href="#">Testimonials</a>
+        </div>
+        <div class="footer-wrapper">
+            <h4>About</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Our Team</a>
+            <a href="#">Blog</a>
+        </div>
+        <div class="footer-wrapper">
+            <h4>Support</h4>
+            <a href="#">Customer Service</a>
+            <a href="#">Trust & Safety</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        
+
+        // Car Listing functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sample data for demonstration
+            let carListings = [
+                {
+                    id: 1,
+                    sellerName: "John Doe",
+                    sellerEmail: "john@example.com",
+                    sellerPhone: "555-1234",
+                    make: "Toyota",
+                    model: "Camry",
+                    year: 2018,
+                    price: 18500,
+                    mileage: 45000,
+                    description: "Excellent condition, one owner, no accidents. Regularly serviced with all maintenance records available. Includes premium sound system and leather seats.",
+                    photos: ['./carrr2.jpg']
+                },
+                {
+                    id: 2,
+                    sellerName: "Jane Smith",
+                    sellerEmail: "jane@example.com",
+                    sellerPhone: "555-5678",
+                    make: "Honda",
+                    model: "Civic",
+                    year: 2020,
+                    price: 22000,
+                    mileage: 15000,
+                    description: "Like new, all maintenance records available. Never been in any accidents. Fuel efficient with great mileage. Includes sunroof and navigation system.",
+                    photos: ["./carrrr1.jpg"]
+                },
+                {
+                    id: 3,
+                    sellerName: "Mike Johnson",
+                    sellerEmail: "mike@example.com",
+                    sellerPhone: "555-9012",
+                    make: "Ford",
+                    model: "F-150",
+                    year: 2015,
+                    price: 25000,
+                    mileage: 80000,
+                    description: "Well-maintained truck, great for work or play. Comes with bed liner and towing package. Powerful V8 engine with plenty of towing capacity.",
+                    photos: ["./carrr3.jpg"]
+                },
+                {
+                    id: 4,
+                    sellerName: "Sarah Williams",
+                    sellerEmail: "sarah@example.com",
+                    sellerPhone: "555-3456",
+                    make: "BMW",
+                    model: "X5",
+                    year: 2019,
+                    price: 42000,
+                    mileage: 32000,
+                    description: "Luxury SUV with all the premium features. Heated leather seats, panoramic sunroof, and advanced safety features. Excellent condition inside and out.",
+                    photos: ["./carrr4.jpg"]
+                },
+                {
+                    id: 5,
+                    sellerName: "David Brown",
+                    sellerEmail: "david@example.com",
+                    sellerPhone: "555-7890",
+                    make: "Tesla",
+                    model: "Model 3",
+                    year: 2021,
+                    price: 38000,
+                    mileage: 12000,
+                    description: "Electric vehicle with autopilot features. Long range battery with fast charging capability. Includes premium interior and full self-driving hardware.",
+                    photos: ["./carrr5.jpeg"]
+                },
+                {
+                    id: 6,
+                    sellerName: "Emily Davis",
+                    sellerEmail: "emily@example.com",
+                    sellerPhone: "555-2345",
+                    make: "Chevrolet",
+                    model: "Corvette",
+                    year: 2017,
+                    price: 52000,
+                    mileage: 18000,
+                    description: "Sports car with powerful V8 engine. Low mileage and garage kept. Includes performance package and premium sound system. A true head-turner.",
+                    photos: ["./carrr6.jpg"]
+                }
+            ];
+
+            // DOM Elements
+            const carForm = document.getElementById('carForm');
+            const imagePreview = document.getElementById('imagePreview');
+            const carPhotosInput = document.getElementById('carPhotos');
+            const carListingsContainer = document.getElementById('carListings');
+            const searchInput = document.getElementById('searchInput');
+            const priceFilter = document.getElementById('priceFilter');
+            const modal = document.getElementById('carModal');
+            const modalContent = document.getElementById('modalCarDetails');
+            const closeBtn = document.querySelector('.close');
+
+            // Initialize the page
+            displayAllCars();
+
+            // Event Listeners
+            carPhotosInput.addEventListener('change', handleImagePreview);
+            carForm.addEventListener('submit', handleFormSubmit);
+            searchInput.addEventListener('input', filterCars);
+            priceFilter.addEventListener('change', filterCars);
+            closeBtn.addEventListener('click', closeModal);
+            window.addEventListener('click', outsideClick);
+
+            // Handle image preview
+            function handleImagePreview() {
+                imagePreview.innerHTML = '';
+                const files = carPhotosInput.files;
+
+                if (files.length > 5) {
+                    alert('You can upload a maximum of 5 images');
+                    carPhotosInput.value = '';
+                    return;
+                }
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        imagePreview.appendChild(img);
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Handle form submission
+            function handleFormSubmit(e) {
+                e.preventDefault();
+
+                // Get form values
+                const sellerName = document.getElementById('sellerName').value;
+                const sellerEmail = document.getElementById('sellerEmail').value;
+                const sellerPhone = document.getElementById('sellerPhone').value;
+                const carMake = document.getElementById('carMake').value;
+                const carModel = document.getElementById('carModel').value;
+                const carYear = document.getElementById('carYear').value;
+                const carPrice = document.getElementById('carPrice').value;
+                const carMileage = document.getElementById('carMileage').value;
+                const carDescription = document.getElementById('carDescription').value;
+
+                // Handle image uploads
+                const photos = [];
+                const files = carPhotosInput.files;
+
+                if (files.length === 0) {
+                    alert('Please upload at least one photo of your car');
+                    return;
+                }
+
+                for (let i = 0; i < files.length; i++) {
+                    photos.push(URL.createObjectURL(files[i]));
+                }
+
+                // Create new car listing
+                const newCar = {
+                    id: carListings.length + 1,
+                    sellerName,
+                    sellerEmail,
+                    sellerPhone,
+                    make: carMake,
+                    model: carModel,
+                    year: parseInt(carYear),
+                    price: parseInt(carPrice),
+                    mileage: parseInt(carMileage),
+                    description: carDescription,
+                    photos
+                };
+
+                // Add to listings
+                carListings.unshift(newCar);
+
+                // Reset form
+                carForm.reset();
+                imagePreview.innerHTML = '';
+
+                // Update displays
+                displayAllCars();
+
+                // Show success message
+                alert('Your car has been listed successfully!');
+
+                // Scroll to the listings section
+                document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Display all cars
+            function displayAllCars() {
+                carListingsContainer.innerHTML = '';
+
+                carListings.forEach(car => {
+                    const carCard = createCarCard(car);
+                    carListingsContainer.appendChild(carCard);
+                });
+            }
+
+            // Create car card element
+            function createCarCard(car) {
+                const carCard = document.createElement('div');
+                carCard.className = 'car-card';
+
+                carCard.innerHTML = `
+                    <div class="car-image">
+                        <img src="${car.photos[0]}" alt="${car.make} ${car.model}">
+                    </div>
+                    <div class="car-details">
+                        <h3>${car.year} ${car.make} ${car.model}</h3>
+                        <div class="car-specs">
+                            <span><i class="fas fa-tachometer-alt"></i> ${car.mileage.toLocaleString()} miles</span>
+                        </div>
+                        <div class="car-price">$${car.price.toLocaleString()}</div>
+                        <a href="#" class="view-btn" data-id="${car.id}">View Details</a>
+                    </div>
+                `;
+
+                // Add click event to view button
+                const viewBtn = carCard.querySelector('.view-btn');
+                viewBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    viewCarDetails(car.id);
+                });
+
+                return carCard;
+            }
+
+            // View car details in modal
+            function viewCarDetails(carId) {
+                const car = carListings.find(c => c.id === carId);
+
+                if (!car) return;
+
+                // Create modal content
+                let photosHTML = '';
+                if (car.photos.length > 0) {
+                    photosHTML = `
+                        <img src="${car.photos[0]}" class="main-image" alt="${car.make} ${car.model}">
+                        <div class="thumbnail-container">
+                            ${car.photos.map((photo, index) => `
+                                <img src="${photo}" class="thumbnail ${index === 0 ? 'active' : ''}" 
+                                     alt="Thumbnail ${index + 1}" onclick="changeMainImage(this, '${photo}')">
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                modalContent.innerHTML = `
+                    <div class="car-modal-content">
+                        <div class="car-modal-images">
+                            ${photosHTML}
+                        </div>
+                        <div class="car-modal-info">
+                            <h2>${car.year} ${car.make} ${car.model}</h2>
+                            <div class="modal-price">$${car.price.toLocaleString()}</div>
+                            <div class="car-modal-specs">
+                                <div><i class="fas fa-tachometer-alt"></i> ${car.mileage.toLocaleString()} miles</div>
+                                <div><i class="fas fa-calendar-alt"></i> ${car.year}</div>
+                                <div><i class="fas fa-car"></i> ${car.make}</div>
+                                <div><i class="fas fa-car-side"></i> ${car.model}</div>
+                            </div>
+                            <div class="car-description">
+                                <p>${car.description}</p>
+                            </div>
+                            <div class="seller-info">
+                                <h3>Seller Information</h3>
+                                <p><strong>Name:</strong> ${car.sellerName}</p>
+                                <p><strong>Email:</strong> ${car.sellerEmail}</p>
+                                <p><strong>Phone:</strong> ${car.sellerPhone}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Show modal
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Change main image when thumbnail is clicked
+            window.changeMainImage = function (thumb, src) {
+                const mainImage = document.querySelector('.main-image');
+                if (mainImage) {
+                    mainImage.src = src;
+                }
+
+                // Update active thumbnail
+                document.querySelectorAll('.thumbnail').forEach(t => {
+                    t.classList.remove('active');
+                });
+                thumb.classList.add('active');
+            };
+
+            // Filter cars based on search and price
+            function filterCars() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const priceValue = priceFilter.value;
+
+                const filtered = carListings.filter(car => {
+                    const matchesSearch =
+                        car.make.toLowerCase().includes(searchTerm) ||
+                        car.model.toLowerCase().includes(searchTerm) ||
+                        car.year.toString().includes(searchTerm);
+
+                    const matchesPrice =
+                        !priceValue || car.price <= parseInt(priceValue);
+
+                    return matchesSearch && matchesPrice;
+                });
+
+                displayFilteredCars(filtered);
+            }
+
+            // Display filtered cars
+            function displayFilteredCars(filteredCars) {
+                carListingsContainer.innerHTML = '';
+
+                if (filteredCars.length === 0) {
+                    carListingsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No cars match your search criteria.</p>';
+                    return;
+                }
+
+                filteredCars.forEach(car => {
+                    const carCard = createCarCard(car);
+                    carListingsContainer.appendChild(carCard);
+                });
+            }
+
+            // Close modal
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            // Close modal when clicking outside
+            function outsideClick(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            }
+        });
+        // Contact Form Handling
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('contactName').value;
+                const email = document.getElementById('contactEmail').value;
+                const phone = document.getElementById('contactPhone').value;
+                const subject = document.getElementById('contactSubject').value;
+                const message = document.getElementById('contactMessage').value;
+
+                // Here you would typically send this data to a server
+                // For demonstration, we'll just show an alert
+                alert(`Thank you, ${name}! Your message has been received. We'll contact you soon at ${email}.`);
+
+                // Reset the form
+                contactForm.reset();
+            });
+        }
+    </script>
+</body>
+
+</html>
